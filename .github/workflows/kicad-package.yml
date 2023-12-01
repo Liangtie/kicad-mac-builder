@@ -12,12 +12,12 @@
   
   jobs:
     create_archive:
-      runs-on: macos-latest
+      runs-on: ARM64 macOS
       steps:
         - name: Get latest tag
           uses: oprypin/find-latest-tag@v1
           with:
-            repository: Liangtie/kicad-mac-builder
+            repository: kicad-huaqiu/kicad-mac-builder
             releases-only: true
           id: latest-release
   
@@ -27,38 +27,35 @@
         # - name: Setup brew env
         #   run: ./ci/arm64-on-arm64/bootstrap-arm64-on-arm64.sh
 
-        - name: Build kicad dependency with brew
-          run: WX_SKIP_DOXYGEN_VERSION_CHECK=1 ./build.py --arch arm64 --target setup-kicad-dependencies
+        # - name: Build kicad dependency with brew
+        #   run: WX_SKIP_DOXYGEN_VERSION_CHECK=1 ./build.py --arch arm64 --target setup-kicad-dependencies
 
-        - name: Cache brew pkgs
-          uses: actions/cache@v3
-          with:
-            key: brew_caches
-            restore-keys: brew_caches
-            path: |
-              ~/Library/Caches/Homebrew
-              /opt/homebrew
+        # - name: Cache brew pkgs
+        #   uses: actions/cache@v3
+        #   with:
+        #     key: brew_caches
+        #     restore-keys: brew_caches
+        #     path: |
+        #       ~/Library/Caches/Homebrew
+        #       /opt/homebrew
 
         - name: Triggers a build
-          run:  ./build.py --arch=arm64 --target package-kicad-unified --kicad-git-url  https://gitlab.com/Liangtie/kicad.git  --kicad-ref origin/dev
+          run:  ./build.py --arch=arm64 --target package-kicad-unified --kicad-git-url  https://gitlab.com/Liangtie/kicad.git  --kicad-ref origin/dev --release_name test
 
-        - name: Cache kicad build
-          uses: actions/cache@v3
-          with:
-            key: build_cache
-            restore-keys: build_cache
-            path: |
-              ~/Library/Caches/Homebrew
-              /opt/homebrew
-
-        - name: Show build content
-          run: ls -R dmg
+        # - name: Cache kicad build
+        #   uses: actions/cache@v3
+        #   with:
+        #     key: build_cache
+        #     restore-keys: build_cache
+        #     path: |
+        #       ~/Library/Caches/Homebrew
+        #       /opt/homebrew
 
         - name: Upload installer as asset to release
           uses: svenstaro/upload-release-action@v2
           with:
             repo_token: ${{ secrets.GITHUB_TOKEN }}
-            file: ./.out/kicad-dev7.0.8-x86_64.exe
-            asset_name: kicad-dev-${{ steps.latest-release.outputs.tag }}-x86_64.exe
+            file: ./build/dmg/kicad-unified-test.dmg
+            asset_name: kicad-unified-${{ steps.latest-release.outputs.tag }}-test.dmg
             overwrite: true
             tag: ${{ steps.latest-release.outputs.tag }}
