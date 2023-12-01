@@ -12,7 +12,7 @@
   
   jobs:
     create_archive:
-      runs-on: ARM64 macOS
+      runs-on: self-hosted ARM64 macOS 
       steps:
         - name: Get latest tag
           uses: oprypin/find-latest-tag@v1
