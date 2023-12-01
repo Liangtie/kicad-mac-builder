@@ -9,7 +9,7 @@
       types:
         - published
     workflow_dispatch:
-  
+
   jobs:
     create_archive:
       runs-on: self-hosted
@@ -17,7 +17,7 @@
         - name: Get latest tag
           uses: oprypin/find-latest-tag@v1
           with:
-            repository: kicad-huaqiu/kicad-mac-builder
+            repository: Liangtie/kicad-mac-builder
             releases-only: true
           id: latest-release
   
