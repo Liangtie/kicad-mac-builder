@@ -40,7 +40,7 @@
         #       /opt/homebrew
 
         - name: Triggers a build
-          run:  ./build.py --arch=arm64 --target package-kicad-unified --kicad-git-url  https://gitlab.com/Liangtie/kicad.git  --kicad-ref origin/dev --release_name test
+          run:  ./build.py --arch=arm64 --target package-kicad-unified --kicad-git-url  https://gitlab.com/Liangtie/kicad.git  --kicad-ref origin/dev --release-name test
 
         # - name: Cache kicad build
         #   uses: actions/cache@v3
